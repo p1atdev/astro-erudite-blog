@@ -330,4 +330,51 @@ const budoux = useBudoux();
       });
     });
   </script>
+
+  <!-- Image lightbox -->
+  <dialog id="lightbox" aria-label="画像を拡大表示">
+    <button id="lightbox-close" aria-label="閉じる">
+      <Icon name="lucide:x" class="size-4" />
+    </button>
+    <img id="lightbox-img" src="" alt="" />
+  </dialog>
+
+  <script>
+    document.addEventListener("astro:page-load", () => {
+      const article = document.querySelector("article.prose");
+      if (!article) return;
+
+      const lightbox = document.getElementById(
+        "lightbox",
+      ) as HTMLDialogElement | null;
+      if (!lightbox) return;
+
+      const lightboxImg = document.getElementById(
+        "lightbox-img",
+      ) as HTMLImageElement | null;
+      if (!lightboxImg) return;
+
+      // 記事内の画像にクリックイベントを設定（リンク内の画像は除く）
+      const images = article.querySelectorAll<HTMLImageElement>("img");
+      images.forEach((img) => {
+        if (img.closest("a")) return;
+        img.addEventListener("click", () => {
+          lightboxImg.src = img.src;
+          lightboxImg.alt = img.alt;
+          lightbox.showModal();
+        });
+      });
+
+      // 背景（backdrop）クリックで閉じる
+      lightbox.addEventListener("click", (e) => {
+        if (e.target === lightbox) {
+          lightbox.close();
+        }
+      });
+
+      // 閉じるボタン
+      const closeBtn = document.getElementById("lightbox-close");
+      closeBtn?.addEventListener("click", () => lightbox.close());
+    });
+  </script>
 </Layout>

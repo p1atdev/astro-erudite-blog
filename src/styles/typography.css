@@ -194,6 +194,13 @@
       }
     }
 
+    /* lightbox: リンク内の画像は除く */
+    :where(img):not(:where([class~="not-prose"], [class~="not-prose"] *)):not(
+        :where(a *)
+      ) {
+      @apply cursor-zoom-in;
+    }
+
     :where(pre):not(:where([class~="not-prose"], [class~="not-prose"] *)) {
       @apply max-h-[min(68vh,1000px)]! overflow-y-auto [&::-webkit-scrollbar-corner]:hidden;
     }
