@@ -10,7 +10,7 @@
 		"preview": "astro preview",
 		"astro": "astro",
 		"postinstall": "patch-package",
-		"lint": "oxlint --fix",
+		"lint": "oxlint",
 		"format": "prettier --write **/*.{ts,tsx,css,astro} --ignore-path .gitignore",
 		"new:article": "bun run --bun ./utils/new-article.ts"
 	},
@@ -63,7 +63,6 @@
 		"unist-util-visit": "^5.1.0"
 	},
 	"devDependencies": {
-		"@biomejs/biome": "^2.5.0",
 		"@iconify-json/ri": "^1.2.10",
 		"@iconify-json/tabler": "^1.2.35",
 		"@pagefind/default-ui": "^1.5.2",

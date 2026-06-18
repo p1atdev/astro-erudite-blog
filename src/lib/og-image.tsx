@@ -60,17 +60,15 @@ const generateOgpImage = async (children: React.ReactNode) => {
   ]);
 
   return new ImageResponse(
-    (
-      <div
-        lang={SITE.locale}
-        style={{
-          fontFamily: '"Red Hat Display", "IBM Plex Sans JP", sans-serif',
-        }}
-        tw="relative text-black w-full h-full flex p-0 m-0"
-      >
-        {children}
-      </div>
-    ),
+    <div
+      lang={SITE.locale}
+      style={{
+        fontFamily: '"Red Hat Display", "IBM Plex Sans JP", sans-serif',
+      }}
+      tw="relative text-black w-full h-full flex p-0 m-0"
+    >
+      {children}
+    </div>,
     {
       width: 1200,
       height: 630,
