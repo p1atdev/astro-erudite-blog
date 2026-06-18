@@ -2,11 +2,35 @@
 	"extends": "astro/tsconfigs/strict",
 	"compilerOptions": {
 		"strictNullChecks": true,
-		"baseUrl": ".",
+		// "baseUrl": ".",
 		"paths": {
-			"@/*": ["./src/*"]
+			"@/*": [
+				"./src/*"
+			]
 		},
 		"jsx": "react-jsx",
-		"jsxImportSource": "react"
+		"jsxImportSource": "react",
+		// Environment setup & latest features
+		"lib": [
+			"ESNext"
+		],
+		"target": "ESNext",
+		"module": "Preserve",
+		"moduleDetection": "force",
+		"allowJs": true,
+		"types": [
+			"bun"
+		],
+		// Bundler mode
+		"moduleResolution": "bundler",
+		"allowImportingTsExtensions": true,
+		"verbatimModuleSyntax": true,
+		"noEmit": true,
+		// Best practices
+		"strict": true,
+		// "skipLibCheck": true,
+		// "noFallthroughCasesInSwitch": true,
+		// "noUncheckedIndexedAccess": true,
+		// "noImplicitOverride": true,
 	}
 }
