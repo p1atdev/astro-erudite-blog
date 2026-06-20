@@ -1,5 +1,6 @@
 import type { APIContext, APIRoute } from "astro";
 import { getAllPostsAndSubposts } from "@/lib/data-utils";
+import { ROBOTS_NOINDEX_DIRECTIVES } from "@/lib/robots";
 import type { CollectionEntry } from "astro:content";
 import { BlogOgImage } from "@/lib/og-image";
 
@@ -16,5 +17,11 @@ export const GET: APIRoute<CollectionEntry<"blog">> = async (
 ) => {
   const post = context.props;
 
-  return BlogOgImage(post);
+  const response = await BlogOgImage(post);
+
+  if (post.data.noindex) {
+    response.headers.set("X-Robots-Tag", ROBOTS_NOINDEX_DIRECTIVES);
+  }
+
+  return response;
 };

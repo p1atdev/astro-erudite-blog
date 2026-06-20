@@ -5,6 +5,7 @@ import sitemap from "@astrojs/sitemap";
 import { pluginCollapsibleSections } from "@expressive-code/plugin-collapsible-sections";
 import { pluginLineNumbers } from "@expressive-code/plugin-line-numbers";
 import tailwindcss from "@tailwindcss/vite";
+import type { AstroIntegration } from "astro";
 import { defineConfig } from "astro/config";
 import expressiveCode from "astro-expressive-code";
 import icon from "astro-icon";
@@ -18,8 +19,23 @@ import swup from "@swup/astro";
 import pagefind from "astro-pagefind";
 import rehypeAutolinkHeadings from "rehype-autolink-headings";
 import rehypeLinkCard from "./src/lib/rehype/link-card";
-import embeds from 'astro-embed/integration';
+import embeds from "astro-embed/integration";
 import { SITE } from "./src/consts";
+import {
+  getNoindexBlogIds,
+  isNoindexBlogUrl,
+  writeNoindexHeadersFile,
+} from "./utils/noindex-posts";
+
+const noindexBlogIds = getNoindexBlogIds();
+const noindexHeaders = (noindexIds: Set<string>): AstroIntegration => ({
+  name: "noindex-headers",
+  hooks: {
+    "astro:build:done": ({ dir }) => {
+      writeNoindexHeadersFile(dir, noindexIds);
+    },
+  },
+});
 
 export default defineConfig({
   site: "https://blog.p1at.dev",
@@ -69,12 +85,15 @@ export default defineConfig({
     }),
     embeds({
       services: {
-        LinkPreview: false
-      }
+        LinkPreview: false,
+      },
     }),
     mdx(),
     react(),
-    sitemap(),
+    sitemap({
+      filter: (page) => !isNoindexBlogUrl(page, noindexBlogIds),
+    }),
+    noindexHeaders(noindexBlogIds),
     icon(),
     swup({
       accessibility: true,

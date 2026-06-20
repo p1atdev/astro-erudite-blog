@@ -1,5 +1,5 @@
 import type { APIContext, APIRoute } from "astro";
-import { getAllPosts } from "@/lib/data-utils";
+import { getAllIndexablePosts } from "@/lib/data-utils";
 import { SITE } from "@/consts";
 import { formatDate } from "@/lib/utils";
 
@@ -13,7 +13,7 @@ const linkText = (text: string, href: string) => {
 
 const llmsTxt = (
   context: APIContext,
-  posts: Awaited<ReturnType<typeof getAllPosts>>,
+  posts: Awaited<ReturnType<typeof getAllIndexablePosts>>,
 ) => {
   const baseUrl = context.site?.toString() ?? SITE.href;
   const content = `# ${SITE.title}
@@ -21,7 +21,7 @@ URL: ${baseUrl}
 
 > ${SITE.description}
 
-You can access the raw markdown text by adding \`.txt\` to the URL of any blog post, e.g. ${baseUrl}/blog/hello-world.txt
+You can access the raw markdown text by adding \`.txt\` to the URL of any listed blog post, e.g. ${baseUrl}/blog/hello-world.txt
 
 ## Posts
 ${posts.length} posts available:
@@ -37,7 +37,7 @@ ${posts.length} posts available:
 };
 
 export const GET: APIRoute = async (context: APIContext) => {
-  const posts = await getAllPosts();
+  const posts = await getAllIndexablePosts();
 
   const txt = llmsTxt(context, posts);
 

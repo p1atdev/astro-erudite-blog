@@ -13,6 +13,14 @@ export function isPublishedOrDevMode(post: CollectionEntry<"blog">): boolean {
   return !post.data.draft;
 }
 
+export function isNoindexPost(post: CollectionEntry<"blog">): boolean {
+  return post.data.noindex;
+}
+
+export function isIndexablePost(post: CollectionEntry<"blog">): boolean {
+  return !isNoindexPost(post);
+}
+
 export async function getAllPosts(): Promise<CollectionEntry<"blog">[]> {
   const posts = await getCollection("blog");
   return posts
@@ -27,6 +35,20 @@ export async function getAllPostsAndSubposts(): Promise<
   return posts
     .filter((post) => isPublishedOrDevMode(post))
     .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+}
+
+export async function getAllIndexablePosts(): Promise<
+  CollectionEntry<"blog">[]
+> {
+  const posts = await getAllPosts();
+  return posts.filter(isIndexablePost);
+}
+
+export async function getAllIndexablePostsAndSubposts(): Promise<
+  CollectionEntry<"blog">[]
+> {
+  const posts = await getAllPostsAndSubposts();
+  return posts.filter(isIndexablePost);
 }
 
 export async function getAllProjects(): Promise<CollectionEntry<"projects">[]> {
